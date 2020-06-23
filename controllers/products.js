@@ -22,7 +22,6 @@ exports.addImages = (req, res, next) => {
 
 exports.addProduct = (req, res, next) => {
   const productFields = _.cloneDeep(req.body);
-  console.log('Prod Fiels', productFields)
 
   productFields.itemNo = rand();
 
@@ -103,6 +102,7 @@ exports.updateProduct = (req, res, next) => {
 exports.getProducts = (req, res, next) => {
   const perPage = Number(req.query.perPage);
   const startPage = Number(req.query.startPage);
+
   const sort = req.query.sort;
 
   Product.find()
@@ -143,13 +143,17 @@ exports.getProductsFilterParams = async (req, res, next) => {
   const startPage = Number(req.query.startPage);
   const sort = req.query.sort;
 
+
   try {
     const products = await Product.find(mongooseQuery)
       .skip(startPage * perPage - perPage)
       .limit(perPage)
       .sort(sort);
 
+
+
     const productsQuantity = await Product.find(mongooseQuery);
+
 
     res.json({ products, productsQuantity: productsQuantity.length });
   } catch (err) {

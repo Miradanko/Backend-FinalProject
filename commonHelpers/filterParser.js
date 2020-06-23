@@ -1,7 +1,8 @@
-const excludedParams = ["perPage", "startPage", "minPrice", "maxPrice"];
+const excludedParams = ["perPage", "startPage", "minPrice", "maxPrice", "sort"];
 
 module.exports = function filterParser(filtersQueryString) {
   const mongooseQuery = {};
+/*  if (filtersQueryString.sort)*/
 
   if (filtersQueryString.minPrice || filtersQueryString.maxPrice) {
     mongooseQuery.currentPrice = {
@@ -21,7 +22,6 @@ module.exports = function filterParser(filtersQueryString) {
       } else if (!excludedParams.includes(filterParam)) {
         mongooseQuery[filterParam] = decodeURI(filtersQueryString[filterParam]);
       }
-
       return mongooseQuery;
     },
     mongooseQuery
