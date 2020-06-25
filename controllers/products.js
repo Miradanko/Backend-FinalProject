@@ -171,15 +171,16 @@ exports.searchProducts = async (req, res, next) => {
   //Taking the entered value from client in lower-case and trimed
   let query = req.body.query
     .toLowerCase()
-    .trim()
-    .replace(/\s\s+/g, " ");
+    // .replace(/\s\s+/g, " ")
+    .trim();
 
   // Creating the array of key-words from taken string
   let queryArr = query.split(" ");
 
   // Finding ALL products, that have at least one match
   let matchedProducts = await Product.find({
-    $text: { $search: query }
+    // $text: { $search: query }
+    name: { $regex: query } 
   });
 
   res.send(matchedProducts);
