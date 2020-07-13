@@ -1,5 +1,6 @@
 const Filter = require("../models/Filter");
 const queryCreator = require("../commonHelpers/queryCreator");
+const filterParser = require("../commonHelpers/filterParser");
 const _ = require("lodash");
 
 exports.addFilter = (req, res, next) => {
@@ -82,6 +83,7 @@ exports.deleteFilter = (req, res, next) => {
 };
 
 exports.getFilters = (req, res, next) => {
+    console.log('working')
   Filter.find()
     .then(filters => res.json(filters))
     .catch(err =>
@@ -91,12 +93,27 @@ exports.getFilters = (req, res, next) => {
     );
 };
 
-exports.getFiltersByType = (req, res, next) => {
-  Filter.find({ type: req.params.type })
+/*exports.getFiltersByType = (req, res, next) => {
+    console.log('getFiltersByType');
+  Filter.find({ name: req.query.name })
     .then(filters => res.json(filters))
     .catch(err =>
       res.status(400).json({
         message: `Error happened on server: "${err}" `
       })
     );
-};
+};*/
+
+exports.getFiltersFilterParams=async(req, res, next)=>{
+    const mongooseQuery = filterParser(req.query);
+
+    try {
+     Filter.find(mongooseQuery)
+            .then(filters => {
+                res.json(filters)})
+    } catch(err) {
+        res.status(400).json({
+            message: `Error happened on server: "${err}" `
+        })
+    }
+}
