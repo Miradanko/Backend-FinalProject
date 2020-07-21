@@ -150,8 +150,6 @@ exports.getProductsFilterParams = async (req, res, next) => {
       .limit(perPage)
       .sort(sort);
 
-
-
     const productsQuantity = await Product.find(mongooseQuery);
 
 

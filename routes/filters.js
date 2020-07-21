@@ -8,7 +8,8 @@ const {
   updateFilter,
   deleteFilter,
   getFilters,
-  getFiltersByType
+/*  getFiltersByType,*/
+  getFiltersFilterParams
 } = require("../controllers/filters");
 
 // @route   POST /filters
@@ -46,6 +47,10 @@ router.get("/", getFilters);
 // @route   GET /filters/:type
 // @desc    GET existing filters by "type" field
 // @access  Public
-router.get("/:type", getFiltersByType);
+/*router.get("/:type", getFiltersByType);*/
+// @route   GET /filters/filter
+// @desc    GET existing filters by filter
+// @access  Public
+router.get("/filter", getFiltersFilterParams);
 
 module.exports = router;
