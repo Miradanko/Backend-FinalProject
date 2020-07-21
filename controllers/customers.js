@@ -26,6 +26,8 @@ exports.createCustomer = (req, res, next) => {
 
   // Check Validation
   const { errors, isValid } = validateRegistrationForm(req.body);
+  console.log("isValid", isValid);
+  console.log("errors", errors)
 
   if (!isValid) {
     return res.status(400).json(errors);
@@ -55,6 +57,7 @@ exports.createCustomer = (req, res, next) => {
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newCustomer.password, salt, (err, hash) => {
           if (err) {
+            console.log("errorsDB", err)
             res
               .status(400)
               .json({ message: `Error happened on server: ${err}` });
@@ -65,11 +68,13 @@ exports.createCustomer = (req, res, next) => {
           newCustomer.password = hash;
           newCustomer
             .save()
-            .then(customer => res.json(customer))
-            .catch(err =>
+            .then((customer) => res.json(customer))
+            .catch(err => {
+              console.log("errorsPAS", err)
               res.status(400).json({
                 message: `Error happened on server: "${err}" `
               })
+            }
             );
         });
       });
@@ -233,7 +238,7 @@ exports.updatePassword = (req, res) => {
   Customer.findOne({ _id: req.user.id }, (err, customer) => {
     let oldPassword = req.body.password;
 
-    customer.comparePassword(oldPassword, function(err, isMatch) {
+    customer.comparePassword(oldPassword, function (err, isMatch) {
       if (!isMatch) {
         errors.password = "Password does not match";
         res.json(errors);

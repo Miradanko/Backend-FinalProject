@@ -14,7 +14,7 @@ const {
 // @route   POST /customers
 // @desc    Register customer
 // @access  Public
-router.post("/", createCustomer);
+router.post("/register", createCustomer);
 
 // @route   POST /customers/login
 // @desc    Login Customer / Returning JWT Token
